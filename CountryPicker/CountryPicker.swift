@@ -59,12 +59,15 @@ class CountryPicker: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSource 
             let countryName = NSLocale.currentLocale().displayNameForKey(NSLocaleCountryCode, value: code)
             
             let phoneNumberUtil = NBPhoneNumberUtil.sharedInstance()
-            let phoneCode: String? = "+\(phoneNumberUtil.getCountryCodeForRegion(code))"
             
-            if phoneCode != "+0" {
+            if let myCodes = phoneNumberUtil?.getCountryCode(forRegion: code) {
+            
+                let phoneCode : String = String.init(describing: myCodes)
+                if phoneCode != "+0" {
                 let country = Country(code: code, name: countryName, phoneCode: phoneCode)
                 countries.append(country)
             }
+          }
         }
         
         countries = countries.sort({ $0.name < $1.name })
